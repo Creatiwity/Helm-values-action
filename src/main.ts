@@ -15,13 +15,38 @@ export async function run(): Promise<void> {
     './.github/config/_common.yml'
   ])
   const secrets = getSecrets(core.getInput('secrets'))
+  const values = getValues(getInput('values'))
 
-  await fs.writeFile('./values.yml', '{}')
+  await fs.writeFile('./values.yml', values)
 
   await renderFiles(valueFiles.concat(['./values.yml']), {
     secrets,
     deployment: context.payload.deployment
   })
+}
+
+function getInput(name: string) {
+  const context = github.context
+  const deployment = context.payload.deployment
+  let val = core.getInput(name.replace('_', '-'), {
+    required: false
+  })
+  if (deployment) {
+    if (deployment[name]) val = deployment[name]
+    if (deployment.payload[name]) val = deployment.payload[name]
+  }
+
+  return val
+}
+
+function getValues(values: string) {
+  if (!values) {
+    return '{}'
+  }
+  if (typeof values === 'object') {
+    return JSON.stringify(values)
+  }
+  return values
 }
 
 function renderFiles(files: string[], data: Record<string, any>) {

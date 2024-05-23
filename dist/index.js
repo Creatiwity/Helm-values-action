@@ -30018,13 +30018,37 @@ async function run() {
         './.github/config/_common.yml'
     ]);
     const secrets = getSecrets(core.getInput('secrets'));
-    await promises_1.default.writeFile('./values.yml', '{}');
+    const values = getValues(getInput('values'));
+    await promises_1.default.writeFile('./values.yml', values);
     await renderFiles(valueFiles.concat(['./values.yml']), {
         secrets,
         deployment: context.payload.deployment
     });
 }
 exports.run = run;
+function getInput(name) {
+    const context = github.context;
+    const deployment = context.payload.deployment;
+    let val = core.getInput(name.replace('_', '-'), {
+        required: false
+    });
+    if (deployment) {
+        if (deployment[name])
+            val = deployment[name];
+        if (deployment.payload[name])
+            val = deployment.payload[name];
+    }
+    return val;
+}
+function getValues(values) {
+    if (!values) {
+        return '{}';
+    }
+    if (typeof values === 'object') {
+        return JSON.stringify(values);
+    }
+    return values;
+}
 function renderFiles(files, data) {
     core.debug(`rendering value files [${files.join(',')}] with: ${JSON.stringify(data)}`);
     const tags = ['${{', '}}'];
