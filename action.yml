@@ -12,6 +12,9 @@ inputs:
   secrets:
     description: 'Secrets'
     required: false
+  values:
+    description: 'Values'
+    required: false
 
 # Define your outputs here.
 #outputs:
