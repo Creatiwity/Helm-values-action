@@ -30018,6 +30018,7 @@ async function run() {
         './.github/config/_common.yml'
     ]);
     const secrets = getSecrets(core.getInput('secrets'));
+    await promises_1.default.writeFile('./values.yml', '{}');
     await renderFiles(valueFiles.concat(['./values.yml']), {
         secrets,
         deployment: context.payload.deployment
