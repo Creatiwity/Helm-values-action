@@ -16,6 +16,8 @@ export async function run(): Promise<void> {
   ])
   const secrets = getSecrets(core.getInput('secrets'))
 
+  await fs.writeFile('./values.yml', '{}')
+
   await renderFiles(valueFiles.concat(['./values.yml']), {
     secrets,
     deployment: context.payload.deployment
