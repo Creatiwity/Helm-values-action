@@ -10,10 +10,7 @@ import Mustache from 'mustache'
  */
 export async function run(): Promise<void> {
   const context = github.context
-  const valueFiles = getValueFiles([
-    './.github/config/pr.yml',
-    './.github/config/_common.yml'
-  ])
+  const valueFiles = getValueFiles(getInput('value_files'))
   const secrets = getSecrets(core.getInput('secrets'))
   const values = getValues(getInput('values'))
 
@@ -73,7 +70,7 @@ function getSecrets(secrets: string) {
   return secrets
 }
 
-function getValueFiles(files: string[]) {
+function getValueFiles(files: string[] | string) {
   let fileList
 
   if (typeof files === 'string') {

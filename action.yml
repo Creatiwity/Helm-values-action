@@ -15,6 +15,11 @@ inputs:
   values:
     description: 'Values'
     required: false
+  values_files:
+    description:
+      'Additional value files to apply to the helm chart. Expects JSON encoded
+      array or a string.'
+    required: false
 
 # Define your outputs here.
 #outputs:

@@ -30013,10 +30013,7 @@ const mustache_1 = __importDefault(__nccwpck_require__(8272));
  */
 async function run() {
     const context = github.context;
-    const valueFiles = getValueFiles([
-        './.github/config/pr.yml',
-        './.github/config/_common.yml'
-    ]);
+    const valueFiles = getValueFiles(getInput('value_files'));
     const secrets = getSecrets(core.getInput('secrets'));
     const values = getValues(getInput('values'));
     await promises_1.default.writeFile('./values.yml', values);
