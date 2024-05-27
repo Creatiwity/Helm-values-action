@@ -10,7 +10,7 @@ import Mustache from 'mustache'
  */
 export async function run(): Promise<void> {
   const context = github.context
-  const valueFiles = getValueFiles(getInput('value_files'))
+  const valueFiles = getValueFiles(getInput('files'))
   const secrets = getSecrets(core.getInput('secrets'))
   const values = getValues(getInput('values'))
 
